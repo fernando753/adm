@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração de Moldura</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #f0f2f5;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="password"], input[type="file"] {
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Configuração de Moldura</h1>
+    <input type="password" id="password" placeholder="Digite a senha" />
+    <button onclick="verifyPassword()">Entrar</button>
+
+    <div id="frame-selection" style="display: none;">
+        <h2>Escolha ou Faça Upload de uma Moldura</h2>
+        <input type="file" id="upload-frame" accept="image/*" />
+        <button onclick="applyFrame()">Aplicar Moldura</button>
+    </div>
+
+    <script>
+        const correctPassword = "963852";
+        const passwordInput = document.getElementById('password');
+        const frameSelection = document.getElementById('frame-selection');
+        const uploadFrameInput = document.getElementById('upload-frame');
+        
+        function verifyPassword() {
+            const enteredPassword = passwordInput.value;
+
+            if (enteredPassword === correctPassword) {
+                frameSelection.style.display = 'block';
+                alert('Senha correta! Agora você pode escolher a moldura.');
+            } else {
+                alert('Senha incorreta. Tente novamente.');
+            }
+        }
+
+        function applyFrame() {
+            const file = uploadFrameInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('selectedFrame', e.target.result);
+                    alert('Moldura aplicada com sucesso!');
+                    window.location.href = 'index.html';  // Redireciona para a página principal do app de câmera
+                };
+                reader.readAsDataURL(file);  // Converte a imagem em Base64
+            } else {
+                alert('Por favor, faça o upload de uma moldura!');
+            }
+        }
+    </script>
+</body>
+</html>
